@@ -54,7 +54,7 @@ img {
 .btn {
   display: block;
   padding: 10px 30px;
-  background: #87f;
+  background: #ff6464;
   border-radius: 4px;
   color: #fff;
   text-align: center;
@@ -67,7 +67,7 @@ img {
 }
 
 .btn:hover {
-  background: #65d;
+  background: #b9785f;
   transform: scale(1.1);
 }
 
@@ -98,6 +98,6 @@ textarea:hover,
 textarea:focurs {
   outline: none;
   box-shadow: 0 6px 12px rgba(30, 60, 90, 0.2);
-  border-color: #87f;
+  border-color: #ff6464;
 }
 </style>
