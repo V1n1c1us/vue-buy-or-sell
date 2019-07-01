@@ -9,6 +9,7 @@
           <p>{{produto.descricao}}</p>
         </router-link>
       </div>
+      <ProdutosPaginate :produtosTotal="produtosTotal" :produtosPorPagina="produtosPorPagina" />
     </div>
     <div v-else-if="produtos && produtos.length === 0">
       <p class="no-results">Busca sem resultados.. Tente buscar por outro termo.</p>
@@ -17,14 +18,18 @@
 </template>
 
 <script>
+import ProdutosPaginate from "@/components/ProdutosPaginate";
+
 import { api } from "@/services";
 import { serialize } from "@/helpers";
 export default {
   name: "ProdutoLista",
+  components: { ProdutosPaginate },
   data() {
     return {
       produtos: null,
-      produtosPorPagina: 9
+      produtosPorPagina: 2,
+      produtosTotal: 0
     };
   },
   computed: {
@@ -36,6 +41,7 @@ export default {
   methods: {
     getProdutos() {
       api.get(this.url).then(response => {
+        this.produtosTotal = Number(response.headers["x-total-count"]);
         this.produtos = response.data;
       });
     }
