@@ -1,19 +1,22 @@
 <template>
   <section class="produto-container">
-    <div v-if="produtos  && produtos.length" class="produtos">
-      <div class="produto" v-for="produto in produtos" :key="produto.id">
-        <router-link to="/">
-          <img v-if="produto.fotos" :src="produto.fotos[0].src" :alt="produto.fotos.titulo" />
-          <p class="preco">{{produto.preco}}</p>
-          <h2 class="titulo">{{produto.nome}}</h2>
-          <p>{{produto.descricao}}</p>
-        </router-link>
+    <transition mode="out-in">
+      <div v-if="produtos  && produtos.length" class="produtos" key="produtos">
+        <div class="produto" v-for="produto in produtos" :key="produto.id">
+          <router-link to="/">
+            <img v-if="produto.fotos" :src="produto.fotos[0].src" :alt="produto.fotos.titulo" />
+            <p class="preco">{{produto.preco}}</p>
+            <h2 class="titulo">{{produto.nome}}</h2>
+            <p>{{produto.descricao}}</p>
+          </router-link>
+        </div>
+        <ProdutosPaginate :produtosTotal="produtosTotal" :produtosPorPagina="produtosPorPagina" />
       </div>
-      <ProdutosPaginate :produtosTotal="produtosTotal" :produtosPorPagina="produtosPorPagina" />
-    </div>
-    <div v-else-if="produtos && produtos.length === 0">
-      <p class="no-results">Busca sem resultados.. Tente buscar por outro termo.</p>
-    </div>
+      <div v-else-if="produtos && produtos.length === 0" key="sem-resultados">
+        <p class="no-results">Busca sem resultados.. Tente buscar por outro termo.</p>
+      </div>
+      <PaginaCarregando key="carregando" v-else />
+    </transition>
   </section>
 </template>
 
@@ -22,6 +25,7 @@ import ProdutosPaginate from "@/components/ProdutosPaginate";
 
 import { api } from "@/services";
 import { serialize } from "@/helpers";
+
 export default {
   name: "ProdutoLista",
   components: { ProdutosPaginate },
@@ -40,10 +44,13 @@ export default {
   },
   methods: {
     getProdutos() {
-      api.get(this.url).then(response => {
-        this.produtosTotal = Number(response.headers["x-total-count"]);
-        this.produtos = response.data;
-      });
+      this.produtos = null;
+      window.setTimeout(() => {
+        api.get(this.url).then(response => {
+          this.produtosTotal = Number(response.headers["x-total-count"]);
+          this.produtos = response.data;
+        });
+      }, 1500);
     }
   },
   watch: {
