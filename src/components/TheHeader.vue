@@ -1,7 +1,7 @@
 <template>
   <header>
     <nav>
-      <router-link to="/" class="logo">
+      <router-link to="/login" class="logo">
         <img alt="Vue logo" src="@/assets/online-store.svg" />
       </router-link>
       <router-link class="btn" to="/login">Vender / Login</router-link>
