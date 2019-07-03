@@ -31,7 +31,10 @@ export default {
     };
   },
   methods: {
-    logar() {}
+    logar() {
+      this.$store.dispatch("getUsuario", this.login.email);
+      this.$router.push("/usuario");
+    }
   }
 };
 </script>
@@ -57,11 +60,11 @@ form {
   margin-left: auto;
   margin-right: auto;
 }
-.perdeu {
+.reset-password {
   text-align: center;
   margin: 20px auto 0 auto;
 }
-.perdeu a:hover {
+.reset-password a:hover {
   color: #87f;
   text-decoration: underline;
 }
